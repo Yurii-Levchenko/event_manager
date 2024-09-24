@@ -1,0 +1,22 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{%block title%}Meetups{%endblock%}</title>
+    <link rel="stylesheet" href="{%static 'meetups/styles/base.css'%}">
+    {%block css_files%}{%endblock%}
+</head>
+<body>
+    {% csrf_token %}
+    <header id='main-header'>
+        <nav><a href="/meetups" id='main-logo'>DjangoMeetups</a></nav>
+        <h1>{%block main_heading%}{%endblock%}</h1>
+        <p>{%block header_content%}{%endblock%}</p>
+    </header>
+    <main>
+        {%block body%}{% endblock %}
+    </main>
+</body>
+</html>

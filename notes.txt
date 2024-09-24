@@ -1,0 +1,98 @@
+1. after creating app folder i add its name to INSTALLED APPS to settings.py
+2. to have html templates or static files (.css / scripts .js / images)
+    in app's folder I should create folder <templates/static>/<app's_name> containing these files
+    for example:
+    C:\Projects-in-Python\event_manager\meetups\templates\meetups\index.html
+    C:\Projects-in-Python\event_manager\meetups\static\meetups\styles\base.css
+    C:\Projects-in-Python\event_manager\meetups\static\meetups\scripts
+    C:\Projects-in-Python\event_manager\meetups\static\meetups\images
+
+3. create urls.py in app's folder containing this specific app's urls 
+    and connect it to main urls in my project's urls.py
+    Project's urls.py:
+        from django.contrib import admin
+        from django.urls import path, include
+
+            urlpatterns = [
+                path("admin/", admin.site.urls),
+                path('', include('meetups.urls')),
+            ]
+
+    App's urls.py:
+        from django.urls import path
+        from . import views
+
+            urlpatterns = [
+                path('meetups', views.index),
+            ]
+
+4. in index.txt (main page) to connect it with views' logic add line:
+    {%load static%}
+    <link rel="stylesheet" href="{%static 'meetups/styles/base.css'%}">
+    <link rel="stylesheet" href="{% static 'meetups\styles\meetup-details.css'%}">
+
+5. use if and loops(for) to show specific info about items one by one:
+        {%for meetup in meetups%}
+            <div class='meetup-details'>
+                <h3>{{meetup.title}}</h3>
+                <address>{{meetup.location}}</address>
+            </div>
+        {%endfor%}
+        {%if show_meetups%}
+            {%for meetup in meetups%}
+                <h2>{{meetup.title}}</h2>
+                <p>{{meetup_description}}</p>
+            {%endfor%}
+        {%else%}
+            <h2>No Upcoming Meetups</h2>
+        {%endif%}
+
+6. iterating through the list of items from views function
+    we can operate its data in .html file e.g.
+in prev point {{meetup.title}} and {{meetup.location}}
+    are being taken from meetups_page() view:
+    def meetups_page(request):
+        meetups = [
+            {"title": "Chess Tournament",
+            'location': 'Kyiv',
+            'slug': 'first-meetup'},
+            {"title": 'Push up Challange',
+            'location': 'Lviv',
+            'slug': 'second-meetup'},
+        ]
+
+        return render(request, 'meetups/meetups_page.html', {
+            'show_meetups': True,
+            'meetups': meetups
+            })
+
+just like {{meetup.title}} and {{meetup.description}}
+    are being taken from meetup_details() view e.g.
+    def meetup_details(request, meetup_slug):
+        print(meetup_slug)
+        selected_meetup = {
+            'title': 'A first meetup',
+            'description': 'This is '
+        }
+        return render(request, 'meetups/meetup_details.html', {
+            'meetup_title': selected_meetup['title'],
+            'meetup_description': selected_meetup['description'],
+        })
+
+7. to connect meetups page's button to meetup_details page (specific meetup's details url page)
+    we should use {% url 'name-of-url' meetup.slug} e.g.
+    <div class='meetup-actions'>
+        <a href="{% url "meetup-details" meetup.slug %}" class='btn'>More Details</a>
+    </div>
+
+8. creating base.html and extending other pages based on this one
+
+9. includes/meetup.html holds the piece of code to be included in other html pages
+    meetups_page.html:
+    {% include "meetups/includes/meetup.html" with title=meetup.title location=meetup.location%}
+
+    meetup.html:
+    <div class='meetup-details'>
+        <h3>{{title}}</h3>
+        <address>{{location}}</address>
+    </div>
