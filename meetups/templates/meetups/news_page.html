@@ -1,0 +1,29 @@
+{%extends 'meetups/base/base.html'%}
+{%load static%}
+{%block title%}News Page{%endblock%}
+
+{%block css_files%}
+    <link rel="stylesheet" href="{% static 'meetups/styles/all-news.css' %}">
+{%endblock%}
+
+{%block main_heading%}
+Latest News are All Here
+{%endblock%}
+
+{% block header_content %}
+Check out what's up!
+{% endblock %}
+
+{% block body %}
+{% csrf_token %}
+    <section>
+        <h2>Latest News</h2>
+        <ol>
+            {%for news in all_news%}
+                {% if news.is_published %}
+                    {% include "meetups/includes/news.html" %}
+                {% endif %}
+            {%endfor%}
+        </ol>
+    </section>
+{% endblock %}

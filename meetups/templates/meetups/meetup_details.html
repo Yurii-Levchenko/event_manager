@@ -16,11 +16,11 @@
 
 {% block body %}
 <article>
-    <img src="meetups\images\" alt="">
+    <img class="main-image" src="{{ meetup_image.url }}" alt="meetup_img">
 
     <section id='location'>
         <h2>Meetup Location</h2>
-        <address>This meetup takes place in <span>LOCATION</span> (ADDRESS).</address>
+        <address>This meetup takes place in <span style='color:blue'><a href="{{meetup_location}}"> {{meetup_city}}, {{meetup_country}}</a></span></address>
     </section>
 
     <section id='details'>

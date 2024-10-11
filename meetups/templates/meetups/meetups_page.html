@@ -19,8 +19,10 @@ Find the one that best suits your needs!
 <section>
     <h2>Upcoming Meetups</h2>
     <ol>
-        {%for meetup in meetups%}
-            {% include "meetups/includes/meetup.html" with title=meetup.title location=meetup.location%}
+        {%for meetup in all_meetups%}
+            {% if meetup.is_published %}
+                {% include "meetups/includes/meetup.html" %}
+            {% endif %}
         {%endfor%}
     </ol>
 </section>

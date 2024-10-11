@@ -2,11 +2,23 @@
     <article>
         <div class='meetup-summary'>
             <div class='meetup-image'>
-                <img src="" alt="">
+                <img src="{{ meetup.image.url }}" alt="meetup_img">
             </div>
             <div class='meetup-details'>
-                <h3>{{title}}</h3>
-                <address>{{location}}</address>
+                <h3>{{meetup.title}}</h3>
+                {% if meetup.is_online %}
+                    <address><a href="{{meetup.link}}">Online, Click here to join!</a></address>
+                {%else%}
+                    <address><a href="{{meetup.location}}">{{meetup.city}}, {{meetup.country}}<br></a>
+                {%endif%}
+
+                {% if meetup.event_date %}
+                    {{meetup.event_date}}
+                {% endif %}
+
+                {% if meetup.link %}
+                    <a href="{{link}}"><br>Check event's website!</a></address>
+                {% endif %}
             </div>
         </div>
         <div class='meetup-actions'>
