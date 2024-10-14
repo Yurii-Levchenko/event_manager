@@ -8,6 +8,12 @@ from django.views.generic import ListView, View
 # and notifications for upcoming events.
 # also add simple chat for users, usergroups
 
+class MainPageView(View):
+    def get(self, request):
+        return render(request, 'meetups/index.html')
+    
+
+
 class AllMeetupsView(ListView):
     template_name = 'meetups/meetups_page.html'
     model = Meetups

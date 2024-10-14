@@ -6,7 +6,7 @@ from django.utils import timezone
 
 class Meetups(models.Model):
     title=models.CharField(max_length=200)
-    organizer=models.ForeignKey('Users', on_delete=models.CASCADE)
+    organizer=models.ForeignKey('Users', null=True, on_delete=models.SET_NULL)
     slug=models.SlugField(unique=True)
     description=models.TextField()
     image=models.ImageField(upload_to='meetups_images/%Y/%m/%d/')
@@ -19,6 +19,7 @@ class Meetups(models.Model):
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
     is_published=models.BooleanField(default=False)
+    is_archived=models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
@@ -26,19 +27,20 @@ class Meetups(models.Model):
     class Meta:
         verbose_name_plural = 'Meetups'
     
-    def is_archived(self):
+    def should_be_archived(self):
         if self.event_date is None:
             return False
         return self.event_date < (timezone.now() + timezone.timedelta(hours=2))
 
     def archive(self):
-        self.is_archived = True
-        self.save()
+        if not self.is_archived:
+            self.is_archived = True
+            self.save()
 
 class News(models.Model):
     title=models.CharField(max_length=200)
     slug=models.SlugField(unique=True, null=True, blank=True)
-    author=models.ForeignKey('Users', on_delete=models.CASCADE)
+    author=models.ForeignKey('Users', null=True, on_delete=models.SET_NULL)
     image=models.ImageField(upload_to='news_images/%Y/%m/%d/', null=True, blank=True)
     description=models.TextField()
     created_at=models.DateTimeField(auto_now_add=True)
@@ -83,8 +85,8 @@ class Users(AbstractBaseUser):
     is_admin = models.BooleanField(default=False)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
-    # meetups_organized = models.ManyToManyField(Meetups, blank=True)
-    # news_written = models.ManyToManyField(News, blank=True)
+    # meetups = models.ManyToManyField(Meetups, blank=True)
+    # news = models.ManyToManyField(News, blank=True)
     
     def full_name(self):
         return f"{self.name} {self.surname}"

@@ -10,7 +10,7 @@ class MeetupsAdmin(admin.ModelAdmin):
     search_fields = ('title', 'organizer', 'country', 'city')
 
 class NewsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'author', 'updated_at', 'is_published')
+    list_display = ('id', 'title', 'author', 'updated_at', 'created_at', 'is_published')
     prepopulated_fields = {'slug': ('title', 'author')}
     # prepopulated_fields = {'slug': ('title', 'author__name', 'author__surname')}
     list_display_links = ('id', 'title')

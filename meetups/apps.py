@@ -8,6 +8,6 @@ class MeetupsConfig(AppConfig):
 
     def ready(self):
         scheduler = BackgroundScheduler()
-        scheduler.add_job(archive_meetups, 'interval', minutes = 30)
+        scheduler.add_job(archive_meetups, 'interval', minutes = 2)
         scheduler.start()
 
