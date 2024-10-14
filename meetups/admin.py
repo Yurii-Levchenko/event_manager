@@ -3,7 +3,7 @@ from .models import Meetups, Users, News
 # Register your models here.
 
 class MeetupsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'organizer', 'country', 'city','is_online', 'is_published')
+    list_display = ('id', 'title', 'organizer', 'country', 'city','is_online', 'is_published', 'is_archived')
     prepopulated_fields = {'slug': ('title', 'organizer')}
     list_display_links = ('id', 'title')
     list_filter = ('organizer', 'country')

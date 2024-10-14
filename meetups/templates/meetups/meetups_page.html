@@ -20,7 +20,7 @@ Find the one that best suits your needs!
     <h2>Upcoming Meetups</h2>
     <ol>
         {%for meetup in all_meetups%}
-            {% if meetup.is_published %}
+            {% if meetup.is_published and not meetup.is_archived %}
                 {% include "meetups/includes/meetup.html" %}
             {% endif %}
         {%endfor%}

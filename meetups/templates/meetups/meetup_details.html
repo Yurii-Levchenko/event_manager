@@ -1,31 +1,43 @@
 {%extends 'meetups/base/base.html'%}
 {%load static%}
 
-{% block title %}{{meetup_title}}{% endblock %}
+{% block title %}{{meetup.title}}{% endblock %}
 {% block css_files %}
 <link rel="stylesheet" href="{% static 'meetups\styles\meetup-details.css'%}">
 {% endblock  %}
 
 {%block main_heading %}
-{{meetup_title}}
+{{meetup.title}}
 {% endblock %}
 
 {% block header_content %}
-{{meetup_description}}
+{{meetup.description}}
 {% endblock header_content %}
 
 {% block body %}
 <article>
-    <img class="main-image" src="{{ meetup_image.url }}" alt="meetup_img">
+    <img class="main-image" src="{{ meetup.image.url }}" alt="meetup_img">
 
     <section id='location'>
         <h2>Meetup Location</h2>
-        <address>This meetup takes place in <span style='color:blue'><a href="{{meetup_location}}"> {{meetup_city}}, {{meetup_country}}</a></span></address>
+        {% if meetup.is_online %}
+            <address>This Meetup is Online, <a href="{{meetup.link}}">Click here to join!</a></address>
+        {%else%}
+            <address>This Meetup takes place in <a href="{{meetup.location}}">{{meetup.city}}, {{meetup.country}}<br></a>
+        {%endif%}
+        
+        {% if meetup.event_date %}
+            {{meetup.event_date}}
+        {% endif %}
+
+        {% if meetup.link %}
+            <a href="{{link}}"><br>Check event's website!</a></address>
+        {% endif %}
     </section>
 
     <section id='details'>
         <h2>What's this Meetup About?</h2>
-        <p>{{meetup_description}}</p>
+        <p>{{meetup.description}}</p>
         <footer>
             <p>Need More Details? <a href="">contact Organizer</a></p>
         </footer>

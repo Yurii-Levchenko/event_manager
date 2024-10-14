@@ -1,7 +1,6 @@
-from msilib.schema import ListView
 from django.shortcuts import render
 from .models import Meetups, News
-from django.views.generic import ListView
+from django.views.generic import ListView, View
 
 # Event Management System: Design an event management 
 # application that allows users to create, manage, and join events. 
@@ -21,39 +20,30 @@ class AllMeetupsView(ListView):
         queryset_without_date = queryset.filter(event_date__isnull=True).order_by('-created_at')
         return list(queryset_with_date) + list(queryset_without_date)
     
+    def archived_meetups(self, request, *args, **kwargs):
+        archived_meetups = self.get_queryset().filter(is_archived=True)
+        return render(request, 'meetups/archived_meetups.html', {'archived_meetups': archived_meetups})
+    
+    def get_template_names(self):
+        if self.request.path == '/archive':
+            return ['meetups/archived_meetups_page.html']
+        return ['meetups/meetups_page.html']
 
-# def meetups_page(request):
-#     meetups = Meetups.objects.all()
+class MeetupsDetailView(View):
+    def get(self, request, meetup_slug):
+        meetup = Meetups.objects.get(slug=meetup_slug)
 
-#     return render(request, 'meetups/meetups_page.html', {
-#         'show_meetups': True,
-#         'meetups': meetups
-#     })
+        context = {
+            'meetup': meetup,
+        }
+        return render(request, 'meetups/meetup_details.html', context)
+    
 
-def meetup_details(request, meetup_slug):
-    selected_meetup = {
-        'title': Meetups.objects.get(slug=meetup_slug).title,
-        'description': Meetups.objects.get(slug=meetup_slug).description,
-        'location': Meetups.objects.get(slug=meetup_slug).location,
-        'city': Meetups.objects.get(slug=meetup_slug).city,
-        'country': Meetups.objects.get(slug=meetup_slug).country,
-        'image': Meetups.objects.get(slug=meetup_slug).image,
-        'is_online': Meetups.objects.get(slug=meetup_slug).is_online,
-        'link': Meetups.objects.get(slug=meetup_slug).link,
-        'is_published': Meetups.objects.get(slug=meetup_slug).is_published
-    }
-
-    return render(request, 'meetups/meetup_details.html', {
-        'meetup_title': selected_meetup['title'],
-        'meetup_description': selected_meetup['description'],
-        'meetup_location': selected_meetup['location'],
-        'meetup_city': selected_meetup['city'],
-        'meetup_country': selected_meetup['country'],
-        'meetup_image': selected_meetup['image'],
-        'meetup_is_online': selected_meetup['is_online'],
-        'meetup_link': selected_meetup['link'],
-        'meetup_is_published': selected_meetup['is_published']
-    })
+# class ArchivedMeetupsView(ListView):
+#     template_name = 'meetups/archived_meetups_page.html'
+#     model = Meetups
+#     ordering = ['-event_date']
+#     context_object_name = 'archived_meetups'
 
 
 class AllNewsView(ListView):
@@ -69,4 +59,12 @@ class AllNewsView(ListView):
 
 
 class NewsDetailView(ListView):
-    pass
+    def get(self, request, news_slug):
+        news = News.objects.get(slug=news_slug)
+
+        context = {
+            'news': news,
+        }
+        return render(request, 'meetups/news_details.html', context)
+
+

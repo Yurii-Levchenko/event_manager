@@ -1,6 +1,7 @@
 from django.db import models
 from location_field.models.plain import PlainLocationField
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.utils import timezone
 
 
 class Meetups(models.Model):
@@ -24,7 +25,15 @@ class Meetups(models.Model):
     
     class Meta:
         verbose_name_plural = 'Meetups'
+    
+    def is_archived(self):
+        if self.event_date is None:
+            return False
+        return self.event_date < (timezone.now() + timezone.timedelta(hours=2))
 
+    def archive(self):
+        self.is_archived = True
+        self.save()
 
 class News(models.Model):
     title=models.CharField(max_length=200)

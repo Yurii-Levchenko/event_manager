@@ -1,0 +1,36 @@
+{%extends 'meetups/base/base.html'%}
+{%load static%}
+
+{% block title %}{{news.title}}{% endblock %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static 'meetups\styles\meetup-details.css'%}">
+{% endblock  %}
+
+{%block main_heading %}
+<h2>{{news.title}}</h2>
+<h3>{{news.description}}</h3>
+{% endblock %}
+
+{% block header_content %}
+<h3>By {{news.author}}</h3>
+<h5>Published on {{news.created_at}}</h5>
+{% endblock header_content %}
+
+{% block body %}
+<article>
+    <img class="main-image" src="{{ news.image.url }}" alt="news_img">
+
+    <section id='details'>
+        <h2>What's this Meetup About?</h2>
+        <p>{{news.description}}</p>
+        <footer>
+            <p>Need More Details? <a href="">contact Author</a></p>
+        </footer>
+    </section>
+
+    <section id='registration'>
+        <h2>Comment Section</h2>
+        FORM
+    </section>
+</article>
+{% endblock body %}
