@@ -11,7 +11,6 @@ from django.views.generic import ListView, View
 class MainPageView(View):
     def get(self, request):
         return render(request, 'meetups/index.html')
-    
 
 
 class AllMeetupsView(ListView):
@@ -72,5 +71,6 @@ class NewsDetailView(ListView):
             'news': news,
         }
         return render(request, 'meetups/news_details.html', context)
+
 
 
