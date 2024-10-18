@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block header_content %}
-{{meetup.description}}
+<article class='description'>{{meetup.description}}</article>
 {% endblock header_content %}
 
 {% block body %}
@@ -23,7 +23,7 @@
         {% if meetup.is_online %}
             <address>This Meetup is Online, <a href="{{meetup.link}}">Click here to join!</a></address>
         {%else%}
-            <address>This Meetup takes place in <a href="{{meetup.location}}">{{meetup.city}}, {{meetup.country}}<br></a>
+            <address>This Meetup takes place in <a href="{{meetup.location}}" class='location' >{{meetup.city}}, {{meetup.country}}<br></a>
         {%endif%}
         
         {% if meetup.event_date %}

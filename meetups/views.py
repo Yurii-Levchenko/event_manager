@@ -25,7 +25,7 @@ class AllMeetupsView(ListView):
         queryset_without_date = queryset.filter(event_date__isnull=True).order_by('-created_at')
         return list(queryset_with_date) + list(queryset_without_date)
     
-    def archived_meetups(self, request, *args, **kwargs):
+    def archived_meetups(self, request):
         archived_meetups = self.get_queryset().filter(is_archived=True)
         return render(request, 'meetups/archived_meetups.html', {'archived_meetups': archived_meetups})
     
@@ -33,6 +33,14 @@ class AllMeetupsView(ListView):
         if self.request.path == '/archive':
             return ['meetups/archived_meetups_page.html']
         return ['meetups/meetups_page.html']
+
+
+# class ArchivedMeetupsView(ListView):
+#     template_name = 'meetups/archived_meetups_page.html'
+#     model = Meetups
+#     ordering = ['-event_date']
+#     context_object_name = 'archived_meetups'
+
 
 class MeetupsDetailView(View):
     def get(self, request, meetup_slug):
@@ -43,13 +51,6 @@ class MeetupsDetailView(View):
         }
         return render(request, 'meetups/meetup_details.html', context)
     
-
-# class ArchivedMeetupsView(ListView):
-#     template_name = 'meetups/archived_meetups_page.html'
-#     model = Meetups
-#     ordering = ['-event_date']
-#     context_object_name = 'archived_meetups'
-
 
 class AllNewsView(ListView):
     template_name = 'meetups/news_page.html'
@@ -71,6 +72,5 @@ class NewsDetailView(ListView):
             'news': news,
         }
         return render(request, 'meetups/news_details.html', context)
-
 
 
