@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import Meetups, News
 from django.views.generic import ListView, View
 
+
 # Event Management System: Design an event management 
 # application that allows users to create, manage, and join events. 
 # Include features like event calendars, RSVP management, 

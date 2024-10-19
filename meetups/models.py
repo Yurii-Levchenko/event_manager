@@ -3,6 +3,9 @@ from location_field.models.plain import PlainLocationField
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.utils import timezone
 
+from django.utils.translation import gettext_lazy as _
+from ckeditor_uploader.fields import RichTextUploadingField
+
 
 class Meetups(models.Model):
     title=models.CharField(max_length=200)
@@ -43,6 +46,7 @@ class News(models.Model):
     author=models.ForeignKey('Users', null=True, on_delete=models.SET_NULL)
     image=models.ImageField(upload_to='news_images/%Y/%m/%d/', null=True, blank=True)
     description=models.TextField()
+    content=RichTextUploadingField(null=True, blank=True)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
     is_published=models.BooleanField(default=False)

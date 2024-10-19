@@ -8,7 +8,6 @@
 
 {%block main_heading %}
 <h2>{{news.title}}</h2>
-<h3>{{news.description}}</h3>
 {% endblock %}
 
 {% block header_content %}
@@ -17,14 +16,17 @@
 {% endblock header_content %}
 
 {% block body %}
+{% csrf_token %}
 <article>
     <img class="main-image" src="{{ news.image.url }}" alt="news_img">
 
     <section id='details'>
-        <h2>What's this Meetup About?</h2>
-        <p>{{news.description}}</p>
+        <h2>{{news.description}}</h2>
+        <div class="content">
+            {{ news.content|safe }}
+        </div>
         <footer>
-            <p>Need More Details? <a href="">contact Author</a></p>
+            <p>Want to connect with the author? <a href="">Reach out here!</a></p>
         </footer>
     </section>
 
