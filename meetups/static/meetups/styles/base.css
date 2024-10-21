@@ -69,3 +69,11 @@ button:hover,
   display: flex;
   gap: 10px;
 }
+
+#logout-form {
+  display: inline;
+}
+#logout-form button {
+  padding: 0;
+  margin: 0;
+}

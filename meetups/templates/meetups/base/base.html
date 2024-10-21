@@ -19,13 +19,24 @@
         <nav class='navbar'>
             <a href="/" id='main-logo'>WeMeet!</a>
             <div class="nav-buttons">
+                
+                {% if user.is_authenticated %}
+                    User: {{ user.get_username }}
+                   <form id="logout-form" method="post" action="{% url 'logout' %}">
+                     {% csrf_token %}
+                     <button type="submit" class="btn btn-link">Logout</button>
+                   </form>
+               {% else %}
+                    <a href="{% url 'login' %}?next={{ request.path }} class='btn btn-link'">Login</a>
+               {% endif %}
+                
                 <a href="/news" class="btn" id='news-page'>News</a>
                 <a href="/meetups" class="btn" id='meetups-page'>Meetups</a>
                 <a href="/archive" class="btn" id='archived-meetups-page'>Meetups Archive</a>
             </div>
         </nav>
         <h1>{%block main_heading%}{%endblock%}</h1>
-        <p>{%block header_content%}{%endblock%}</p>
+        <h3>{%block header_content%}{%endblock%}</h3>
     </header>
     <main>
         {%block body%}{% endblock %}
