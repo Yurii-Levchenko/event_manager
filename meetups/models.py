@@ -2,6 +2,7 @@ from django.db import models
 from location_field.models.plain import PlainLocationField
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.utils import timezone
+from django.conf import settings
 
 from django.utils.translation import gettext_lazy as _
 from ckeditor_uploader.fields import RichTextUploadingField
@@ -10,6 +11,7 @@ from ckeditor_uploader.fields import RichTextUploadingField
 class Meetups(models.Model):
     title=models.CharField(max_length=200)
     organizer=models.ForeignKey('Users', null=True, on_delete=models.SET_NULL)
+    # organizer=models.ForeignKey('settings.AUTH_USER_MODEL', null=True, on_delete=models.SET_NULL)
     slug=models.SlugField(unique=True)
     description=models.TextField()
     image=models.ImageField(upload_to='meetups_images/%Y/%m/%d/')
@@ -44,6 +46,7 @@ class News(models.Model):
     title=models.CharField(max_length=200)
     slug=models.SlugField(unique=True, null=True, blank=True)
     author=models.ForeignKey('Users', null=True, on_delete=models.SET_NULL)
+    # author=models.ForeignKey('settings.AUTH_USER_MODEL', null=True, on_delete=models.SET_NULL)
     image=models.ImageField(upload_to='news_images/%Y/%m/%d/', null=True, blank=True)
     description=models.TextField()
     content=RichTextUploadingField(null=True, blank=True)
@@ -75,7 +78,7 @@ class CustomUserManager(BaseUserManager):
         user = self.create_user(
             email,
             password=password,
-        )
+        ) 
         user.is_admin = True
         user.save(using=self._db)
         return user
@@ -91,19 +94,17 @@ class Users(AbstractBaseUser):
     updated_at=models.DateTimeField(auto_now=True)
     # meetups = models.ManyToManyField(Meetups, blank=True)
     # news = models.ManyToManyField(News, blank=True)
+
+    objects = CustomUserManager()
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+    class Meta:
+        verbose_name_plural = 'Users'
     
     def full_name(self):
         return f"{self.name} {self.surname}"
 
     def __str__(self):
         return self.full_name()
-    
-    objects = CustomUserManager()
-
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
-
-
-
-    class Meta:
-        verbose_name_plural = 'Users'

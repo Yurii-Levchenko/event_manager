@@ -14,40 +14,37 @@
 
 {% block body %}
     <section>
-        <h2>Upcoming Meetups</h2>
         <ol>
-            {% for meetup in all_meetups|slice:":5" %}
-                <div style="float: left; width: 45%;">
-                    {% if meetup.is_published and not meetup.is_archived %}
-                        {% include "meetups/includes/meetup.html" %}
-                    {% endif %}
-                </div>
-            {%endfor%}
+            {% csrf_token %}
+            <section>
+                <h2>Upcoming Meetups</h2>
+                <ol>
+                    {%for meetup in all_meetups%}
+                        {% if meetup.is_published and not meetup.is_archived %}
+                            {% include "meetups/includes/meetup.html" %}
+                        {% endif %}
+                    {%endfor%}
+                </ol>
+            </section>
+
             <div style="clear: both;">
                 <a href="{% url "meetups" %}" class="btn">All Meetups</a>
             </div>
 
-            {%for news in all_news|slice:":5"%}
-                <div style="float: right; width: 45%;">
-                    {% if news.is_published %}
-                        {% include "meetups/includes/news.html" %}
-                    {% endif %}
-                </div>
-            {%endfor%}
+            <section>
+                <h2>Latest News</h2>
+                <ol>
+                    {%for news in all_news%}
+                        {% if news.is_published %}
+                            {% include "meetups/includes/news.html" %}
+                        {% endif %}
+                    {%endfor%}
+                </ol>
+            </section>
+
             <div style="clear: both;">
                 <a href="{% url "news" %}" class="btn">All News</a>
             </div>
-        </ol>
-    </section>
-
-    <section>
-        <h2>Latest News</h2>
-        <ol>
-            {%for news in all_news%}
-                {% if news.is_published %}
-                    {% include "meetups/includes/news.html" %}
-                {% endif %}
-            {%endfor%}
         </ol>
     </section>
 {% endblock %}

@@ -147,3 +147,5 @@ LOGIN_REDIRECT_URL = '/'
 
 # This logs any emails sent to the console (so you can copy the password reset link from the console).
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# AUTH_USER_MODEL = 'meetups.Users'

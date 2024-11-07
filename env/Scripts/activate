@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Projects-in-Python\event_manager\env"
+VIRTUAL_ENV="C:\programming\django\event_manager\env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

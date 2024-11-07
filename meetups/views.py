@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import Meetups, News
 from django.views.generic import ListView, View
+from django.utils import timezone
 
 
 # Event Management System: Design an event management 
@@ -11,7 +12,15 @@ from django.views.generic import ListView, View
 
 class MainPageView(View):
     def get(self, request):
-        return render(request, 'meetups/index.html')
+        recent_meetups = AllMeetupsView.get_ordered_meetups()[:5]
+        recent_news = News.objects.filter(is_published=True).order_by('-created_at')[:5]
+
+        context = {
+            'all_meetups': recent_meetups,
+            'all_news': recent_news,
+        }
+
+        return render(request, 'meetups/index.html', context)
 
 
 class AllMeetupsView(ListView):
@@ -20,11 +29,16 @@ class AllMeetupsView(ListView):
     ordering = ['event_date']
     context_object_name = 'all_meetups'
     
-    def get_queryset(self):
-        queryset = super().get_queryset()
+    @classmethod
+    def get_ordered_meetups(cls):
+        # queryset = super().get_queryset()
+        queryset = Meetups.objects.filter(is_published=True, is_archived=False)
         queryset_with_date = queryset.exclude(event_date__isnull=True).order_by('event_date')
         queryset_without_date = queryset.filter(event_date__isnull=True).order_by('-created_at')
         return list(queryset_with_date) + list(queryset_without_date)
+    
+    def get_queryset(self):
+        return self.get_ordered_meetups()
     
     def archived_meetups(self, request):
         archived_meetups = self.get_queryset().filter(is_archived=True)
@@ -34,13 +48,6 @@ class AllMeetupsView(ListView):
         if self.request.path == '/archive':
             return ['meetups/archived_meetups_page.html']
         return ['meetups/meetups_page.html']
-
-
-# class ArchivedMeetupsView(ListView):
-#     template_name = 'meetups/archived_meetups_page.html'
-#     model = Meetups
-#     ordering = ['-event_date']
-#     context_object_name = 'archived_meetups'
 
 
 class MeetupsDetailView(View):
