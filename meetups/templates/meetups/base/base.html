@@ -26,9 +26,10 @@
                      {% csrf_token %}
                      <button type="submit" class="btn btn-link logout-btn">Logout</button>
                    </form>
-               {% else %}
-                    <a href="{% url 'login' %}?next={{ request.path }} class='btn btn-link'">Login</a>
-               {% endif %}
+                {% else %}
+                    <a href="{% url 'login' %}?next={% url 'main' %}" class='btn btn-link'>Login</a>
+                    {% comment %} <a href="{% url 'login' %}?next={{ request.path }} class='btn btn-link'">Login</a> {% endcomment %}
+                {% endif %}
                 
                 <a href="/news" class="btn" id='news-page'>News</a>
                 <a href="/meetups" class="btn" id='meetups-page'>Meetups</a>
