@@ -10,8 +10,8 @@ from ckeditor_uploader.fields import RichTextUploadingField
 
 class Meetups(models.Model):
     title=models.CharField(max_length=200)
-    organizer=models.ForeignKey('Users', null=True, on_delete=models.SET_NULL)
-    # organizer=models.ForeignKey('settings.AUTH_USER_MODEL', null=True, on_delete=models.SET_NULL)
+    # organizer=models.ForeignKey('Users', null=True, on_delete=models.SET_NULL)
+    organizer=models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL)
     slug=models.SlugField(unique=True)
     description=models.TextField()
     image=models.ImageField(upload_to='meetups_images/%Y/%m/%d/')
@@ -45,8 +45,8 @@ class Meetups(models.Model):
 class News(models.Model):
     title=models.CharField(max_length=200)
     slug=models.SlugField(unique=True, null=True, blank=True)
-    author=models.ForeignKey('Users', null=True, on_delete=models.SET_NULL)
-    # author=models.ForeignKey('settings.AUTH_USER_MODEL', null=True, on_delete=models.SET_NULL)
+    # author=models.ForeignKey('Users', null=True, on_delete=models.SET_NULL)
+    author=models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL)
     image=models.ImageField(upload_to='news_images/%Y/%m/%d/', null=True, blank=True)
     description=models.TextField()
     content=RichTextUploadingField(null=True, blank=True)
@@ -87,9 +87,10 @@ class Users(AbstractBaseUser):
     name = models.CharField(max_length=200)
     surname = models.CharField(max_length=200)
     email = models.EmailField(unique=True)
-    image=models.ImageField(upload_to='user_images')
+    image=models.ImageField(upload_to='user_images', blank=True)
     is_active = models.BooleanField(default=True)
-    is_admin = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
     # meetups = models.ManyToManyField(Meetups, blank=True)
@@ -108,3 +109,22 @@ class Users(AbstractBaseUser):
 
     def __str__(self):
         return self.full_name()
+    
+    def has_perm(self, perm, obj=None):
+        if self.is_superuser:
+            return True
+        
+        # Basic check for a specific object
+        # if obj is not None and hasattr(obj, 'owner'):
+        #     return obj.owner == self  # Allow if the user owns the object
+        
+        return perm in self.get_all_permissions()
+    
+    def has_module_perms(self, meetups):
+        if self.is_superuser:
+            return True
+        
+        return any(perm.startswith(meetups + '.') for perm in self.get_all_permissions())
+    
+
+
