@@ -74,6 +74,20 @@ button:hover,
   display: inline;
 }
 #logout-form button {
-  padding: 0;
   margin: 0;
 }
+
+a {
+  color: #750000;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.user-info {
+  color: #750000;
+  text-decoration: none;
+  margin: 8px 0;
+}
+
+/* .logout-btn, .user-info {
+} */
