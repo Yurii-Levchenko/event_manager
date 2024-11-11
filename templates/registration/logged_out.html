@@ -1,0 +1,14 @@
+{% extends 'meetups/base/base.html' %}
+
+{% load static%}
+
+{%block css_files%}
+<link rel="stylesheet" href="{% static 'meetups/styles/meetup-details.css'%}">
+{%endblock%}
+
+{% block body %}
+<article>
+  <p>Logged out!</p>
+  <a href="{% url 'login'%}">Click here to login again</a>
+</article>
+{% endblock %}
