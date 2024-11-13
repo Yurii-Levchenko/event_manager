@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Meetups, Users, News
+from .models import Meetups, News
 # Register your models here.
 
 class MeetupsAdmin(admin.ModelAdmin):
@@ -17,12 +17,12 @@ class NewsAdmin(admin.ModelAdmin):
     list_filter = ('author', 'is_published')
     search_fields = ('title', 'author')
 
-class UsersAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'surname', 'email', 'is_active')
-    list_display_links = ('id', 'name', 'surname')
-    list_filter = ('is_active',)
-    search_fields = ('name', 'surname', 'email')
+# class UsersAdmin(admin.ModelAdmin):
+#     list_display = ('id', 'name', 'surname', 'email', 'is_active')
+#     list_display_links = ('id', 'name', 'surname')
+#     list_filter = ('is_active',)
+#     search_fields = ('name', 'surname', 'email')
 
 admin.site.register(Meetups, MeetupsAdmin)
 admin.site.register(News, NewsAdmin)
-admin.site.register(Users, UsersAdmin)
+# admin.site.register(Users, UsersAdmin)

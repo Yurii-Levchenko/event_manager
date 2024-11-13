@@ -1,0 +1,27 @@
+{% extends 'meetups/base/base.html' %}
+{% load static%}
+
+{% block title %}Login{% endblock %}
+
+{%block css_files%}
+{% comment %} <link rel="stylesheet" href="{% static 'accounts/styles/register.css'%}"> {% endcomment %}
+<link rel="stylesheet" href="{% static 'meetups/styles/meetup-details.css'%}">
+{%endblock%}
+
+{%block main_heading%}
+Come in, we were waiting for you!
+{%endblock%}
+
+{% block header_content %}
+Our events are much of fun!
+{% endblock %}
+
+{% block body %}
+    <article>
+        <form action="{% url 'register'%}" method="post">
+            {% csrf_token %}
+            {{form}}
+        </form>
+        <button>Submit</button>
+    </article>
+{% endblock%}

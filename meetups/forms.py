@@ -20,3 +20,4 @@ from .models import News
 #         if commit:
 #             instance.save()
 #         return instance
+

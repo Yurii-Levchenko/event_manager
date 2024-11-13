@@ -27,6 +27,8 @@
                      <button type="submit" class="btn btn-link logout-btn">Logout</button>
                    </form>
                 {% else %}
+                    {% comment %} <a href="{% url 'signup' %}?next={% url 'main' %}" class='btn btn-link'>Sign up</a> {% endcomment %}
+                    <a href="{% url 'register' %}?next={% url 'main' %}" class='btn btn-link'>Sign up</a>
                     <a href="{% url 'login' %}?next={% url 'main' %}" class='btn btn-link'>Login</a>
                     {% comment %} <a href="{% url 'login' %}?next={{ request.path }} class='btn btn-link'">Login</a> {% endcomment %}
                 {% endif %}
