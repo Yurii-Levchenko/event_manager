@@ -56,6 +56,7 @@ class MeetupsDetailView(View):
 
         context = {
             'meetup': meetup,
+            'meetup_tags': meetup.tags.all(),
         }
         return render(request, 'meetups/meetup_details.html', context)
     

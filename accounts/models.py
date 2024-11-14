@@ -19,15 +19,20 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
-    first_name = models.CharField(max_length=30, blank=True)
-    last_name = models.CharField(max_length=30, blank=True)
+    name = models.CharField(max_length=30, blank=True)
+    surname = models.CharField(max_length=30, blank=True)
+    image=models.ImageField(upload_to='user_images', blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
+    def full_name(self):
+        return f"{self.name} {self.surname}"
+
     def __str__(self):
-        return self.email
+        return self.full_name()

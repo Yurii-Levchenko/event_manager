@@ -12,6 +12,19 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 
+from channels.routing import ProtocolTypeRouter
+from django.core.asgi import get_asgi_application
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "event_manager.settings")
+django_asgi_app = get_asgi_application()
+
+application = ProtocolTypeRouter({
+    "http": django_asgi_app,
+    # Other protocols can be added later.
+})
+
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -32,17 +45,22 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'event_manager.apps.ChatConfig',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    'daphne',
     "django.contrib.staticfiles",
     'meetups',
     'accounts',
+    'chat',
     'location_field.apps.DefaultConfig',
     'ckeditor',
+    'channels',
 ]
+ASGI_APPLICATION = 'event_manager.asgi.application'
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

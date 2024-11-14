@@ -5,14 +5,27 @@ from .models import CustomUser
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
-    list_display = ('id','email', 'first_name', 'last_name', 'is_active', 'is_staff')
-    list_display_links = ('id', 'email', 'first_name', 'last_name')
-    ordering = ('email',)  # Example: order by email instead of username
-    search_fields = ('first_name', 'last_name', 'email')
+    list_display = ('id','email', 'name', 'surname', 'is_active', 'is_staff')
+    list_display_links = ('id', 'email', 'name', 'surname')
+    ordering = ('email',)  # order by email instead of username
+    search_fields = ('name', 'surname', 'email')
+
+    # Defined fieldsets for editing an existing user
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Personal info', {'fields': ('first_name', 'last_name')}),
+        ('Personal info', {'fields': ('name', 'surname', 'image')}),
         ('Permissions', {'fields': ('is_active', 'is_staff')}),
-        ('Important dates', {'fields': ('last_login',)}),
+        ('Important dates', {'fields': ('last_login', 'created_at')}),
     )
 
+    # Defined add_fieldsets for creating a new user
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'name', 'surname', 'password1', 'password2', 'is_staff', 'is_active'),
+        }),
+    )
+
+    # Specify email as the unique identifier
+    add_form_template = 'admin/auth/user/add_form.html'
+    readonly_fields = ('created_at',)

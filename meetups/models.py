@@ -12,6 +12,7 @@ class Meetups(models.Model):
     title=models.CharField(max_length=200)
     organizer=models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL)
     slug=models.SlugField(unique=True)
+    tags = models.ManyToManyField('Tag', blank=True)
     description=models.TextField()
     image=models.ImageField(upload_to='meetups_images/%Y/%m/%d/')
     event_date=models.DateTimeField(blank=True, null=True)
@@ -57,6 +58,32 @@ class News(models.Model):
     
     class Meta:
         verbose_name_plural = 'News'
+
+
+class Tag(models.Model):
+    caption = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.caption
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # class CustomUserManager(BaseUserManager):
