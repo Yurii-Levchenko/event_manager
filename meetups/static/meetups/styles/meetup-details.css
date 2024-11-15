@@ -111,3 +111,22 @@ address span {
 .tags {
   padding: 0 0 0.8rem 0;
 }
+
+button,
+.btn {
+  cursor: pointer;
+  font: inherit;
+  padding: 0.5rem 1.5rem;
+  background-color: #e6d5a8;
+  border: 1px solid #750000;
+  color: #000000;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+button:hover,
+.btn:hover {
+  background-color: #af0000;
+  border-color: #750000;
+  color: white;
+}

@@ -13,7 +13,6 @@ def register_view(request):
                 login(request, user)
             return redirect(reverse('meetups:main'))
         else:
-            # Debugging or logging
             print("Authentication failed for the new user.")
     else:
         form = CustomUserCreationForm()
