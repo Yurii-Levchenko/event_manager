@@ -10,4 +10,8 @@ urlpatterns = [
     path('archive', views.AllMeetupsView.as_view(), name='archived-meetups'),
     path('news', views.AllNewsView.as_view(), name='news'),
     path('news/<slug:news_slug>', views.NewsDetailView.as_view(), name='news-details'),
+    path('going/', views.GoingView.as_view(), name="going"),
+    path('meetups/create/', views.MeetupCreateView.as_view(), name='meetup-create'),
+    path('meetups/<slug:meetup_slug>/update/', views.MeetupUpdateView.as_view(), name='meetup-update'),
+    path('meetups/<slug:meetup_slug>/delete/', views.MeetupDeleteView.as_view(), name='meetup-delete'),
 ]

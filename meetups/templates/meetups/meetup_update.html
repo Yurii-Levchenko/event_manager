@@ -1,0 +1,33 @@
+{%extends 'meetups/base/base.html'%}
+{% load static %}
+{% block title %}Update Meetup{% endblock %}
+
+{%block css_files%}
+    <link rel="stylesheet" href="{% static 'meetups\styles\meetup-details.css'%}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+{%endblock%}
+
+{% block editing %}
+<nav>
+    <button type="button" onclick="window.history.back()">Back</button>
+</nav>
+{% endblock %}
+
+{% block body %}
+    <article>
+        <div class="form-container">
+            <h2>Edit Your Meetup</h2>
+             
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            {{ form.media }}
+            
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-success">Update Meetup</button>
+            </form>
+        </div>
+    </article>
+{% endblock %}

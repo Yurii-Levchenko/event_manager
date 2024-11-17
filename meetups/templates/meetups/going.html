@@ -1,0 +1,55 @@
+{%extends 'meetups/base/base.html'%}
+{%load static%}
+{%block title%}I'm Going{%endblock%}
+
+{%block css_files%}
+    <link rel="stylesheet" href="{% static 'meetups/styles/all-meetups.css' %}">
+{%endblock%}
+
+{%block main_heading%}
+Your Favorite Meetups
+{%endblock%}
+
+{% block header_content %}
+We are waiting for you!
+{% endblock %}
+
+{% block body %}
+{% csrf_token %}
+<section>
+    <h2>I'm Going</h2>
+    <article id="going-meetups">
+        {% if not has_meetups %}
+            <p>You haven't added any Meetups to this list yet</p>
+        {% endif %}
+
+        <ol>
+            {% for meetup in meetups %}
+                {% if meetup.is_published and not meetup.is_archived %}
+                    {% include "meetups/includes/meetup.html" %}
+                {% endif %}
+                {% comment %} <li><a href="{% url "meetups:meetup-details" meetup.slug %}">{{meetup.title}}</a></li> {% endcomment %}
+            {% endfor %}
+        </ol>
+    </article>
+</section>
+
+<section>
+    <h2>I Visited</h2>
+    <article id="visited-meetups">
+        {% if not has_meetups %}
+            <p>You haven't visited any Meetups yet</p>
+        {% endif %}
+
+        <ol>
+            {% for meetup in meetups %}
+                {% if meetup.is_archived %}
+                    {% include "meetups/includes/meetup.html" %}
+                {% endif %}
+                {% comment %} <li><a href="{% url "meetups:meetup-details" meetup.slug %}">{{meetup.title}}</a></li> {% endcomment %}
+            {% endfor %}
+        </ol>
+
+    </article>
+</section>
+{% endblock %}

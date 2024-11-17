@@ -1,7 +1,59 @@
 from django import forms
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
-from .models import News
+from .models import Meetups, News
+from bootstrap_datepicker_plus.widgets import DateTimePickerInput
+from django.core.exceptions import ValidationError
+# from django.forms.widgets import SplitDateTimeWidget
 
+
+class MeetupForm(forms.ModelForm):
+    class Meta:
+        model = Meetups
+        fields = (
+            'title',
+            'organizer',
+            'tags',
+            'description',
+            # 'image',
+            'event_date',
+            'is_online',
+            'link',
+            'country',
+            'city',
+            'location',
+        )
+        widgets = {
+            'event_date': DateTimePickerInput(
+                format='%Y-%m-%d %H:%M:%S',
+                options={
+                    'sideBySide': True,
+                    'showClose': True,
+                    'showClear': True,
+                    'showTodayButton': True,
+                },
+                attrs={
+                    'data-date-format': 'YYYY-MM-DD HH:mm:ss',
+                    'data-date-autoclose': 'true',
+                }
+            ),
+        }
+    
+    def save(self, commit=True):
+        meetup = super().save(commit=False)
+        meetup.is_published = True
+        if commit:
+            meetup.save()
+        return meetup
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if cleaned_data.get('is_published'):
+            if not cleaned_data.get('title') or not cleaned_data.get('organizer') or not cleaned_data.get('event_date'):
+                raise ValidationError("Please fill in all required fields before publishing.")
+        return cleaned_data
+
+class DateTimeInput(forms.DateTimeInput):
+    input_type = 'datetime-local'
 
 # class CommentForm(forms.ModelForm):
 #     class Meta:
@@ -20,4 +72,3 @@ from .models import News
 #         if commit:
 #             instance.save()
 #         return instance
-

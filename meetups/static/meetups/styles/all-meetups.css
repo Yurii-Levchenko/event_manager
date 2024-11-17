@@ -68,3 +68,17 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+.search-block {
+  max-width: 60rem;
+  margin: auto;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  background-color: #e6d5a8;
+  border: 4px solid #750000;
+  box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.25);
+  position: relative;
+  text-align: center;
+  width: fit-content;
+}
+

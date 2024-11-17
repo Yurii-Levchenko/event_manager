@@ -1,7 +1,9 @@
-email,name,surname,password
-yurii@i.ua,Yurii,Levchenko,y
-jd@i.ua,Jon,Doe,johndeer
-mt@i.ua,Mike,Tyson,tykemison
-tony@i.ua,Tony,Hawk,chips123
-mitmor@i.ua,Mit,Moran,ratatui123
-kk@i.ua,Katya,Komaruk,kalyna123
+email,name,surname,password,group
+admin@i.ua,admin,admin,admin,Admins
+yurii@i.ua,Yurii,Levchenko,y,User Managers
+jd@i.ua,Jon,Doe,johndeer,Users
+mt@i.ua,Mike,Tyson,tykemison,Users
+tony@i.ua,Tony,Hawk,chips123,Meetups Organizers
+mitmor@i.ua,Mit,Moran,ratatui123,Users
+kk@i.ua,Katya,Komaruk,kalyna123,Users
+hj@i.ua,Hue,Jackman,rosomaxa123,Users

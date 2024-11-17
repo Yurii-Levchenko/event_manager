@@ -7,6 +7,17 @@
     <link rel="stylesheet" href="{% static 'meetups/styles/all-meetups.css' %}">
 {%endblock%}
 
+{%block editing%}
+    <nav>
+        {% if user.is_authenticated %}
+            {% if 'meetups.add_meetups' in user.get_all_permissions %}
+                <a href="{% url 'meetups:meetup-create' %}" class="btn btn-warning">Create Meetup</a>
+                {% comment %} <a href="{% url 'meetups:meetup-create' meetup.id %}" class="btn btn-warning">Create Meetup</a> {% endcomment %}
+            {% endif %}
+        {% endif %}
+    </nav>
+{%endblock%}
+
 {%block main_heading%}
 We got Great Meetups coming up!
 {%endblock%}
@@ -17,6 +28,19 @@ Find the one that best suits your needs!
 
 {% block body %}
 {% csrf_token %}
+    <div class='search-block'>
+        <form method="get" action="{% url 'meetups:meetups' %}">
+            <input type="text" name="search" placeholder="Search by title, city, or country" value="{{ request.GET.search }}">
+            <select name="is_online">
+                <option value="">All</option>
+                <option value="true" {% if request.GET.is_online == 'true' %}selected{% endif %}>Online</option>
+                <option value="false" {% if request.GET.is_online == 'false' %}selected{% endif %}>Offline</option>
+            </select>
+            <button type="submit">Filter</button>
+        </form>
+    </div>
+
+
     <section>
         <h2>Upcoming Meetups</h2>
         <ol>

@@ -1,0 +1,47 @@
+{%extends 'meetups/base/base.html'%}
+{% load static %}
+{% block title %}Create Meetup{% endblock %}
+
+{%block css_files%}
+    <link rel="stylesheet" href="{% static 'meetups\styles\meetup-details.css'%}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+{%endblock%}
+
+{% block body %}
+    <article>
+        <div class="form-container">
+            <h2>Create a New Meetup</h2>
+             
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            {{ form.media }}
+            
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-success">Create Meetup!</button>
+            </form>
+            <script>
+                document.querySelector('form').addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const form = event.target;
+                    const formData = new FormData(form);
+                    fetch(form.action, {
+                        method: form.method,
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.is_published) {
+                            alert('Meetup created and published!');
+                        } else {
+                            alert('Meetup created, but not published.');
+                        }
+                    })
+                    .catch(error => console.error(error));
+                });
+            </script>
+        </div>
+    </article>
+{% endblock %}

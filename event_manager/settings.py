@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'location_field.apps.DefaultConfig',
     'ckeditor',
     'channels',
+    'bootstrap_datepicker_plus',
 ]
 
 MIDDLEWARE = [
@@ -154,6 +155,12 @@ LOGIN_REDIRECT_URL = '/'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
+
+# AUTHENTICATION_BACKENDS = (
+#     'django.contrib.auth.backends.ModelBackend',
+#     'event_manager.accounts.backends.EmailAuthBackend',
+# )
+
 
 ASGI_APPLICATION = 'event_manager.asgi.application'
 

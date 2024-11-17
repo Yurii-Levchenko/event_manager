@@ -40,7 +40,7 @@ button:hover,
 #main-header {
   width: 100%;
   text-align: center;
-  padding: 2rem 0;
+  padding: 2rem 0 0.1rem 0;
 }
 
 #main-header h1 {

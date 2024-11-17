@@ -42,7 +42,7 @@ address span {
 }
 
 #details > p {
-  color: #665386;
+  color: #470000;
   padding: 1rem;
   border-radius: 4px;
   max-width: 80%;
@@ -50,7 +50,7 @@ address span {
 }
 
 #details footer {
-  color: #696472;
+  color: #551313;
 }
 
 #details footer a {
@@ -109,7 +109,7 @@ address span {
 }
 
 .tags {
-  padding: 0 0 0.8rem 0;
+  padding: 0.2rem 0 0.2rem 0;
 }
 
 button,
@@ -129,4 +129,8 @@ button:hover,
   background-color: #af0000;
   border-color: #750000;
   color: white;
+}
+
+#meetup-location-info {
+  margin-bottom: 0.4rem;
 }

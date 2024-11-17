@@ -6,6 +6,8 @@ from django.conf import settings
 
 from django.utils.translation import gettext_lazy as _
 from ckeditor_uploader.fields import RichTextUploadingField
+from django.utils.text import slugify
+from django.core.exceptions import ValidationError
 
 
 class Meetups(models.Model):
@@ -14,7 +16,7 @@ class Meetups(models.Model):
     slug=models.SlugField(unique=True)
     tags = models.ManyToManyField('Tag', blank=True)
     description=models.TextField()
-    image=models.ImageField(upload_to='meetups_images/%Y/%m/%d/')
+    image=models.ImageField(upload_to='meetups_images/%Y/%m/%d/', default='default.jpeg')
     event_date=models.DateTimeField(blank=True, null=True)
     is_online=models.BooleanField(default=False)
     link=models.URLField(blank=True)
@@ -32,6 +34,11 @@ class Meetups(models.Model):
     class Meta:
         verbose_name_plural = 'Meetups'
     
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(f"{self.title}-{self.organizer.id}")
+        super().save(*args, **kwargs)
+
     def should_be_archived(self):
         if self.event_date is None:
             return False
@@ -41,6 +48,12 @@ class Meetups(models.Model):
         if not self.is_archived:
             self.is_archived = True
             self.save()
+    
+    def clean(self):
+        if self.is_published:
+            if not self.title or not self.organizer or not self.event_date:
+                raise ValidationError("Please fill in all required fields before publishing.")
+        super().clean()
 
 class News(models.Model):
     title=models.CharField(max_length=200)
