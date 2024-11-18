@@ -1,9 +1,9 @@
-email,name,surname,password,group
-admin@i.ua,admin,admin,admin,Admins
-yurii@i.ua,Yurii,Levchenko,y,User Managers
-jd@i.ua,Jon,Doe,johndeer,Users
-mt@i.ua,Mike,Tyson,tykemison,Users
-tony@i.ua,Tony,Hawk,chips123,Meetups Organizers
-mitmor@i.ua,Mit,Moran,ratatui123,Users
-kk@i.ua,Katya,Komaruk,kalyna123,Users
-hj@i.ua,Hue,Jackman,rosomaxa123,Users
+email,name,surname,password,group,refresh token,access token,
+admin@i.ua,admin,admin,admin,Admins,eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMxOTY4MTM3LCJpYXQiOjE3MzE5NTcyNDUsImp0aSI6ImNkMGM0ZmQ2YmI2NzQ2NjRhYWYyMmZhMzRiNjE2NWJjIiwidXNlcl9pZCI6N30.Iqn7VKhzuL0E7o0w2aNMGP2IzMZlozUeogm5zfSVTqQ,eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMxOTU3NTQ1LCJpYXQiOjE3MzE5NTcyNDUsImp0aSI6IjVmNTI5MmM0NzE2MzRiYWE4MGVhODE5NzFjZjE5MGE2IiwidXNlcl9pZCI6N30.Ck9gDtHihuFkvJkBx5XxN1oJ4T3-fbtmH6yqXuYeRGM,
+yurii@i.ua,Yurii,Levchenko,y,User Managers,,,
+jd@i.ua,Jon,Doe,johndeer,Users,,,
+mt@i.ua,Mike,Tyson,tykemison,Users,,,
+tony@i.ua,Tony,Hawk,chips123,Meetups Organizers,,,
+mitmor@i.ua,Mit,Moran,ratatui123,Users,,,
+kk@i.ua,Katya,Komaruk,kalyna123,Users,,,
+hj@i.ua,Hue,Jackman,rosomaxa123,Users,,,
