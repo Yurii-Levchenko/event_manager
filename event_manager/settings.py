@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'bootstrap_datepicker_plus',
     'rest_framework',
     'rest_api',
+    'drf_yasg', 
 ]
 
 MIDDLEWARE = [

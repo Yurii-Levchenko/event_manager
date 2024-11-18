@@ -1,6 +1,7 @@
-static/admin
-static/ckeditor
-static/location_field
+# static/admin
+# static/ckeditor
+# static/location_field
+static/
 notes.txt
 env/
 backup.json
