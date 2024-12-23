@@ -170,6 +170,8 @@ class NewsDetailView(ListView):
         return render(request, 'meetups/news_details.html', context)
 
 
+def calendar_view(request):
+    return render(request, 'meetups/calendar.html')
 
 
 

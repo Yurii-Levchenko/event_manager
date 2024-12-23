@@ -1,0 +1,85 @@
+{% extends "meetups/base/base.html" %}
+{%load static%}
+{%block title%}Events Calendar{%endblock%}
+
+{% block css_files %}
+    <link rel="stylesheet" href="{% static 'meetups\styles\meetup-details.css'%}">
+{% endblock  %}
+
+{%block main_heading%}
+Events Calendar
+{%endblock%}
+
+{% block header_content %}
+Check upcoming and past events!
+{% endblock %}
+
+{% block body %}
+<div>
+    <button id="filter-all">All Events</button>
+    <button id="filter-upcoming">Upcoming Events</button>
+    <button id="filter-past">Past Events</button>
+</div>
+<div id="calendar"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            events: function(fetchInfo, successCallback, failureCallback) {
+                fetch('/api/calendar/')
+                    .then(response => response.json())
+                    .then(data => {
+                        const events = data.map(event => ({
+                            id: event.id,
+                            title: event.title,
+                            start: event.event_date,
+                            url: event.link,
+                            description: event.description,
+                            isOnline: event.is_online,
+                            location: event.location
+                        }));
+                        successCallback(events);
+                    })
+                    .catch(error => failureCallback(error));
+            },
+            eventClick: function(info) {
+                info.jsEvent.preventDefault();
+                showEventModal(info.event);
+            }
+        });
+
+        calendar.render();
+
+        // Event Filter Buttons
+        document.getElementById('filter-all').addEventListener('click', () => fetchAndReload('/api/calendar/'));
+        document.getElementById('filter-upcoming').addEventListener('click', () => fetchAndReload('/api/calendar/?type=upcoming'));
+        document.getElementById('filter-past').addEventListener('click', () => fetchAndReload('/api/calendar/?type=past'));
+
+        function fetchAndReload(url) {
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const events = data.map(event => ({
+                        id: event.id,
+                        title: event.title,
+                        start: event.event_date,
+                        url: event.link,
+                        description: event.description,
+                        isOnline: event.is_online,
+                        location: event.location
+                    }));
+                    calendar.removeAllEvents();
+                    calendar.addEventSource(events);
+                });
+        }
+    });
+
+    function showEventModal(event) {
+        alert(`Event: ${event.title}\nDetails: ${event.extendedProps.description}`);
+    }
+</script>
+
+{% endblock %}

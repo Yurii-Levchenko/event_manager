@@ -8,6 +8,8 @@ router.register('meetups', views.MeetupsRestView)
 router.register('news', views.NewsRestView)
 router.register('tags', views.TagsRestView)
 
+
 urlpatterns = [
     path('', include(router.urls)),
+    path('calendar/', views.calendar_events, name='calendar-events'),
 ]
