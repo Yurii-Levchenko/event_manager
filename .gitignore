@@ -7,3 +7,4 @@ convert_db_backup.py
 filter_backup.py
 db.sqlite3.backup
 filtered_backup.json
+event_manager/settings.py

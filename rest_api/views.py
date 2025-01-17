@@ -1,7 +1,7 @@
 from django.utils.timezone import now
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import viewsets
 from meetups.models import Meetups, News, Tag
 from accounts.models import CustomUser
@@ -14,7 +14,7 @@ from .serializers import CustomTokenObtainPairSerializer
 from rest_framework.viewsets import ViewSet
 from rest_framework.decorators import action
 
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 
 class CustomUserListAPIView(viewsets.ReadOnlyModelViewSet):
     queryset = CustomUser.objects.all()
@@ -40,6 +40,16 @@ class MeetupsRestView(viewsets.ModelViewSet):
     filter_backends = [SearchFilter]
     search_fields = ['title', 'description', 'city', 'country']
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        event_type = self.request.query_params.get('type')
+
+        if event_type == 'past':
+            return queryset.filter(event_date__lt=now(), is_archived=True)
+        elif event_type == 'upcoming':
+            return queryset.filter(event_date__gte=now(), is_archived=False)
+        return queryset
+
 class NewsRestView(viewsets.ModelViewSet):
     queryset = News.objects.all()
     serializer_class = NewsSerializer
@@ -55,6 +65,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
 
 @api_view(['GET'])
+@permission_classes([AllowAny])
 def calendar_events(request):
     event_type = request.query_params.get('type', 'all')
     current_time = now()

@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from .forms import CustomUserCreationForm
 from django.urls import reverse
 from django.contrib.auth.models import Group
+from .signals import send_welcome_email
 
 def register_view(request):
     if request.method == 'POST':
@@ -16,6 +17,7 @@ def register_view(request):
             
             if user is not None:
                 login(request, user)
+                
             return redirect(reverse('meetups:main'))
         else:
             print("Authentication failed for the new user.")
