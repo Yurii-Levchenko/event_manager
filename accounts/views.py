@@ -3,11 +3,10 @@ from django.shortcuts import render, redirect
 from .forms import CustomUserCreationForm
 from django.urls import reverse
 from django.contrib.auth.models import Group
-from .signals import send_welcome_email
 
 def register_view(request):
     if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             user = authenticate(request, email=form.cleaned_data['email'], password=form.cleaned_data['password1'])

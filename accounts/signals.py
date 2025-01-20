@@ -1,14 +1,11 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth import get_user_model
-from django.core.mail import send_mail
 from django.conf import settings
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 
 User = get_user_model()
-
-
 @receiver(post_save, sender=User)
 def send_welcome_email(sender, instance, created, **kwargs):
     if created:
@@ -17,7 +14,7 @@ def send_welcome_email(sender, instance, created, **kwargs):
             to_emails=instance.email,
             subject="Welcome to WeMeet!",
             html_content=f"<strong>Hi {instance.name},</strong><br><br>"
-                         f"Thank you for registering at WeMeet! We are excited to have you on board. Let's meet today!"
+                         f"Thank you for registering at ! We are excited to have you on board. Let's meet today!"
         )
         try:
             sg = SendGridAPIClient(settings.SENDGRID_API_KEY)

@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Meetups, News
 from django.views.generic import ListView, View
 from django.utils import timezone
@@ -36,15 +36,6 @@ class AllMeetupsView(ListView):
     model = Meetups
     ordering = ['event_date']
     context_object_name = 'all_meetups'
-    
-    # @classmethod
-    # def get_ordered_meetups(cls):
-    #     # queryset = super().get_queryset()
-    #     queryset = Meetups.objects.filter(is_published=True, is_archived=False)
-    #     queryset_with_date = queryset.exclude(event_date__isnull=True).order_by('event_date')
-    #     queryset_without_date = queryset.filter(event_date__isnull=True).order_by('-created_at')
-    #     # return list(queryset_with_date) + list(queryset_without_date)
-    #     return queryset_with_date.union(queryset_without_date)
 
     @classmethod
     def get_ordered_meetups(cls):
@@ -100,7 +91,6 @@ class MeetupsDetailView(View):
             going = meetup_id in going_meetups
         else:
             going = False
-        
         return going
 
     def get(self, request, meetup_slug):
@@ -114,38 +104,64 @@ class MeetupsDetailView(View):
         return render(request, 'meetups/meetup_details.html', context)
     
 
+@method_decorator(login_required, name='dispatch')
 class GoingView(View):
     def get(self, request):
-        going_meetups = request.session.get("going_meetups")
-        context = {}
-
-        if going_meetups is None or len(going_meetups) == 0:
-            context["meetups"] = []    
-            context["has_meetups"] = False
-        else:
-            meetups = Meetups.objects.filter(id__in=going_meetups)
-            context["meetups"] = meetups
-            context["has_meetups"] = True
-
+        going_meetups = request.session.get("going_meetups", [])
+        
+        meetups = Meetups.objects.filter(id__in=going_meetups) if going_meetups else []
+        context = {
+            "meetups": meetups,
+            "has_meetups": bool(meetups),
+            "user": request.user
+        }
         return render(request, "meetups/going.html", context)
     
     def post(self, request):
-        going_meetups = request.session.get("going_meetups")
+        going_meetups = request.session.get("going_meetups", [])
 
-        if going_meetups is None:
-            going_meetups = []
-        
         meetup_id = int(request.POST["meetup_id"])
 
-        if meetup_id not in going_meetups:
-            # im adding meetup's id, not object as a whole
-            going_meetups.append(meetup_id)
-        else:
+        if meetup_id in going_meetups:
             going_meetups.remove(meetup_id)
+        else:
+            going_meetups.append(meetup_id)
         
         request.session["going_meetups"] = going_meetups
-        
         return HttpResponseRedirect("/going")
+
+
+# class GoingView(View):
+#     def get(self, request):
+#         going_meetups = request.session.get("going_meetups")
+#         context = {}
+
+#         if going_meetups is None or len(going_meetups) == 0:
+#             context["meetups"] = []    
+#             context["has_meetups"] = False
+#         else:
+#             meetups = Meetups.objects.filter(id__in=going_meetups)
+#             context["meetups"] = meetups
+#             context["has_meetups"] = True
+#         return render(request, "meetups/going.html", context)
+    
+#     def post(self, request):
+#         going_meetups = request.session.get("going_meetups")
+
+#         if going_meetups is None:
+#             going_meetups = []
+        
+#         meetup_id = int(request.POST["meetup_id"])
+
+#         if meetup_id not in going_meetups:
+#             # im adding meetup's id, not object as a whole
+#             going_meetups.append(meetup_id)
+#         else:
+#             going_meetups.remove(meetup_id)
+        
+#         request.session["going_meetups"] = going_meetups
+#         return HttpResponseRedirect("/going")
+        # return redirect('going')
     
 
 class AllNewsView(ListView):

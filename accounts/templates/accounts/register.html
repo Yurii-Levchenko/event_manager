@@ -18,10 +18,10 @@ Our events are much of fun!
 
 {% block body %}
     <article>
-        <form action="{% url 'register'%}" method="post">
+        <form action="{% url 'register'%}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {{form}}
-            <button>Submit</button>
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
         </form>
     </article>
 {% endblock%}

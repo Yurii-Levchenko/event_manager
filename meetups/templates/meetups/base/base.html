@@ -25,7 +25,7 @@
                         <button type="submit" class="btn btn-link logout-btn">Logout</button>
                     </form>
                     <p class="user-info">User: {{ user.get_username }}</p>
-                    <a href="/going" class="btn" id='going'>I'm Going</a>
+                    <a href="/going" class="btn" id='going'>I'm Going!</a>
 
                 {% else %}
                     <a href="{% url 'register' %}?next={% url 'meetups:main' %}" class='btn btn-link'>Sign up</a>

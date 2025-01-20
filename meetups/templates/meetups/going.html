@@ -1,24 +1,31 @@
 {%extends 'meetups/base/base.html'%}
 {%load static%}
-{%block title%}I'm Going{%endblock%}
+{%block title%}I'm Going!{%endblock%}
 
 {%block css_files%}
-    <link rel="stylesheet" href="{% static 'meetups/styles/all-meetups.css' %}">
+    <link rel="stylesheet" href="{% static 'meetups/styles/going.css' %}">
 {%endblock%}
 
 {%block main_heading%}
-Your Favorite Meetups
+
 {%endblock%}
 
 {% block header_content %}
-We are waiting for you!
 {% endblock %}
 
 {% block body %}
 {% csrf_token %}
 <section>
+    <article class='about'>
+        <img class="main-image" src="{{ user.image.url }}" alt="Profile Picture">
+        <h2 class='full_name'>{{user.full_name}}</h2>
+        <h3 class='user_email'>{{user.email}}</h3>
+    </article>
+
+
+    <h1 class='title'>Your Favorite Meetups</h1>
     <h2>I'm Going</h2>
-    <article id="going-meetups">
+    <div id="going-meetups">
         {% if not has_meetups %}
             <p>You haven't added any Meetups to this list yet</p>
         {% endif %}
@@ -31,12 +38,12 @@ We are waiting for you!
                 {% comment %} <li><a href="{% url "meetups:meetup-details" meetup.slug %}">{{meetup.title}}</a></li> {% endcomment %}
             {% endfor %}
         </ol>
-    </article>
+    </div>
 </section>
 
 <section>
     <h2>I Visited</h2>
-    <article id="visited-meetups">
+    <div id="visited-meetups">
         {% if not has_meetups %}
             <p>You haven't visited any Meetups yet</p>
         {% endif %}
@@ -50,6 +57,6 @@ We are waiting for you!
             {% endfor %}
         </ol>
 
-    </article>
+    </div>
 </section>
 {% endblock %}
