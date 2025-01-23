@@ -8,20 +8,17 @@
 {%endblock%}
 
 {%block editing%}
-    <nav>
-        {% if user.is_authenticated %}
-            {% if 'meetups.add_meetups' in user.get_all_permissions %}
-                <a href="{% url 'meetups:meetup-create' %}" class="btn btn-warning">Create Meetup</a>
-                {% comment %} <a href="{% url 'meetups:meetup-create' meetup.id %}" class="btn btn-warning">Create Meetup</a> {% endcomment %}
-            {% endif %}
+    {% if user.is_authenticated %}
+        {% if 'meetups.add_meetups' in user.get_all_permissions %}
+            <a href="{% url 'meetups:meetup-create' %}" class="btn btn-warning">Create Meetup</a>
         {% endif %}
-    </nav>
+    {% endif %}
 {%endblock%}
 
 {%block main_heading%}
 We got Great Meetups coming up!
 {%endblock%}
-
+ 
 {% block header_content %}
 Find the one that best suits your needs!
 {% endblock %}

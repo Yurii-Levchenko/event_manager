@@ -67,7 +67,7 @@ address span {
 
 #registration label {
   font-weight: bold;
-  color: #46424d;
+  color: #ededed;
   margin-right: 1rem;
   display: block;
   margin-bottom: 0.5rem;
@@ -133,4 +133,90 @@ button:hover,
 
 #meetup-location-info {
   margin-bottom: 0.4rem;
+}
+
+
+
+#comments li:last-of-type {
+  border-bottom: none;
+}
+
+#comments li {
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #ccc;
+
+  display: flex; /* Makes name and comment content sit side by side */
+  align-items: center; /* Aligns items vertically */
+  gap: 15px; /* Space between name and comment */
+}
+
+#comments {
+  margin: 1rem auto;
+  width: 90%;
+  max-width: 60rem;
+  border-radius: 12px;
+  background-color: rgb(80, 3, 3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  padding: 1rem 2rem;
+}
+
+#comments h2 {
+  color: #ededed;
+  font-size: 1.1rem;
+  min-width: 120px; /* Ensures name has enough space */
+  white-space: nowrap; /* Prevents name from wrapping */
+}
+
+#comments p {
+  color: #ededed;
+  /* flex: 1; Makes the comment content take up remaining space */
+  margin: 0;
+  padding-left: 10px; /* Adds some spacing from the name */
+  border-left: 2px solid rgba(237, 237, 237, 0.3); /* Optional: Adds a subtle separator */
+}
+
+#comments ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+
+
+
+#comment-form {
+  margin:0.5rem auto;
+  width: 90%;
+  /* max-width: 40rem; */
+  border-radius: 12px;
+  background-color: rgb(80, 3, 3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  padding: 1rem;
+}
+
+#comment-form button {
+  font: inherit;
+  padding: 0.5rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.form-control {
+  margin-bottom: 1rem;
+}
+
+.form-control label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  display: block;
+  color: #ededed;
+}
+
+#id_content {
+  width: 80%;
+  font: inherit;
+  padding: 0.25rem;
+  border-radius: 6px;
+  border: 1px solid #aea079;
+  background-color: #ddc688;
 }

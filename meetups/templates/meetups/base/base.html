@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{%block title%}Meetups{%endblock%}</title>
     <link rel="stylesheet" href="{%static 'meetups/styles/base.css'%}">
+    
     <link rel="icon" href="{% static 'meetups/images/favicon.ico' %}">
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'meetups/images/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'meetups/images/favicon-32x32.png' %}">
@@ -40,10 +41,11 @@
                 <a href="/meetups" class="btn" id='meetups-page'>Meetups</a>
                 <a href="/calendar"><img src="{% static 'calendar-icon.png' %}" alt="Calendar" style="width: 32px; height: 32px;"></a>
                 <a href="/archive" class="btn" id='archived-meetups-page'>Meetups Archive</a>
-                {% comment %} here i want buttons for those who have corresponding rights to create, edit, delete meetups and news {% endcomment %}
             </div>
-            {% block editing %}{% endblock %}
         </nav>
+        <div class="editing-container">
+            {% block editing %}{% endblock %}
+        </div>
 
         <h1>{%block main_heading%}{%endblock%}</h1>
         <h3>{%block header_content%}{%endblock%}</h3>

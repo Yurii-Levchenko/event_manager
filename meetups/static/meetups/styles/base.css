@@ -108,5 +108,24 @@ a {
   text-align: center;
 }
 
-/* .logout-btn, .user-info {
-} */
+
+.editing-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Ensures even spacing */
+  min-height: 37px; /* Ensures consistent height */
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.editing-container form {
+  display: inline-block; /* Ensures the form does not expand */
+  margin: 0; /* Remove any default margin */
+}
+
+.editing-container button,
+.editing-container a {
+  height: 37px; /* Set a uniform height for both buttons */
+  /* padding: 5px 15px; Ensure consistent padding */
+  line-height: normal;
+}

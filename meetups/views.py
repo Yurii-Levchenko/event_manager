@@ -1,6 +1,6 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
-from .models import Meetups, News
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Meetups, News, Comment
 from django.views.generic import ListView, View
 from django.utils import timezone
 from django.db.models import Q
@@ -9,8 +9,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView
-from .forms import MeetupForm
-
+from .forms import MeetupForm, CommentForm
 
 # Event Management System: Design an event management 
 # application that allows users to create, manage, and join events. 
@@ -95,11 +94,13 @@ class MeetupsDetailView(View):
 
     def get(self, request, meetup_slug):
         meetup = Meetups.objects.get(slug=meetup_slug)
+        form = CommentForm()
 
         context = {
             'meetup': meetup,
             'meetup_tags': meetup.tags.all(),
-            'going': self.going(request, meetup.id)
+            'going': self.going(request, meetup.id),
+            'form': form,
         }
         return render(request, 'meetups/meetup_details.html', context)
     
@@ -131,39 +132,6 @@ class GoingView(View):
         return HttpResponseRedirect("/going")
 
 
-# class GoingView(View):
-#     def get(self, request):
-#         going_meetups = request.session.get("going_meetups")
-#         context = {}
-
-#         if going_meetups is None or len(going_meetups) == 0:
-#             context["meetups"] = []    
-#             context["has_meetups"] = False
-#         else:
-#             meetups = Meetups.objects.filter(id__in=going_meetups)
-#             context["meetups"] = meetups
-#             context["has_meetups"] = True
-#         return render(request, "meetups/going.html", context)
-    
-#     def post(self, request):
-#         going_meetups = request.session.get("going_meetups")
-
-#         if going_meetups is None:
-#             going_meetups = []
-        
-#         meetup_id = int(request.POST["meetup_id"])
-
-#         if meetup_id not in going_meetups:
-#             # im adding meetup's id, not object as a whole
-#             going_meetups.append(meetup_id)
-#         else:
-#             going_meetups.remove(meetup_id)
-        
-#         request.session["going_meetups"] = going_meetups
-#         return HttpResponseRedirect("/going")
-        # return redirect('going')
-    
-
 class AllNewsView(ListView):
     template_name = 'meetups/news_page.html'
     model = News
@@ -188,7 +156,6 @@ class NewsDetailView(ListView):
 
 def calendar_view(request):
     return render(request, 'meetups/calendar.html')
-
 
 
 @method_decorator(login_required, name='dispatch')
@@ -231,3 +198,21 @@ class MeetupDeleteView(DeleteView):
     slug_field = 'slug'
     slug_url_kwarg = 'meetup_slug'
     success_url = reverse_lazy('meetups:meetups')
+
+
+@login_required
+def add_comment(request, meetup_slug):
+    meetup = get_object_or_404(Meetups, slug=meetup_slug)
+    form = CommentForm()
+
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.meetup = meetup
+            comment.author = request.user
+            comment.save()
+            return redirect('meetups:meetup-details', meetup_slug=meetup.slug)
+    else:
+        form = CommentForm()
+    return render(request, 'meetup_details.html', {'meetup': meetup, 'form': form})

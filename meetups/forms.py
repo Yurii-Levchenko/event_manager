@@ -1,10 +1,17 @@
 from django import forms
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
-from .models import Meetups, News
+from .models import Meetups, News, Comment
 from bootstrap_datepicker_plus.widgets import DateTimePickerInput
 from django.core.exceptions import ValidationError
 # from django.forms.widgets import SplitDateTimeWidget
 
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+        labels = {
+            "content": "Your comment"
+        }
 
 class MeetupForm(forms.ModelForm):
     class Meta:

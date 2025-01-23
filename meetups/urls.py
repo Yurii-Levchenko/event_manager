@@ -15,4 +15,5 @@ urlpatterns = [
     path('meetups/<slug:meetup_slug>/update/', views.MeetupUpdateView.as_view(), name='meetup-update'),
     path('meetups/<slug:meetup_slug>/delete/', views.MeetupDeleteView.as_view(), name='meetup-delete'),
     path('calendar/', views.calendar_view, name='calendar'),
+    path('meetups/<slug:meetup_slug>/comment/', views.add_comment, name='add-comment'),
 ]
