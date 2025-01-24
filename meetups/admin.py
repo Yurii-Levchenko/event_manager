@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import Meetups, News, Tag
-# Register your models here.
+from .models import Meetups, News, Tag, Comment
+from django.utils.html import format_html
+from django.urls import reverse
 
 class MeetupsAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'organizer', 'country', 'city','is_online', 'is_published', 'is_archived')
@@ -33,13 +34,22 @@ class NewsAdmin(admin.ModelAdmin):
 class TagAdmin(admin.ModelAdmin):
     list_display = ('caption',)
 
-# class UsersAdmin(admin.ModelAdmin):
-#     list_display = ('id', 'name', 'surname', 'email', 'is_active')
-#     list_display_links = ('id', 'name', 'surname')
-#     list_filter = ('is_active',)
-#     search_fields = ('name', 'surname', 'email')
+
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('id','author', 'meetup_link', 'created_at', 'updated_at')
+    list_display_links = ('id', 'author')
+    list_filter = ('updated_at',)
+    search_fields = ('author', 'meetup__title')
+
+    @admin.display(description="Meetup")
+    def meetup_link(self, obj):
+        if obj.meetup:
+            url = reverse("admin:meetups_meetups_change", args=[obj.meetup.id]) # <app's name>_<model's name>_change (meetups_meetups_change)
+            return format_html('<a href="{}">{}</a>', url, obj.meetup.title)
+        return "-"
+
 
 admin.site.register(Meetups, MeetupsAdmin)
 admin.site.register(News, NewsAdmin)
 admin.site.register(Tag, TagAdmin)
-# admin.site.register(Users, UsersAdmin)
+admin.site.register(Comment, CommentAdmin)
