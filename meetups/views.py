@@ -101,6 +101,7 @@ class MeetupsDetailView(View):
             'meetup_tags': meetup.tags.all(),
             'going': self.going(request, meetup.id),
             'form': form,
+            'comments': meetup.comments.all(),
         }
         return render(request, 'meetups/meetup_details.html', context)
     
@@ -171,6 +172,13 @@ class MeetupCreateView(CreateView):
         if self.request.user.is_authenticated:
             form.instance.organizer = self.request.user
         return super().form_valid(form)
+    
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -212,6 +220,7 @@ def add_comment(request, meetup_slug):
             comment.meetup = meetup
             comment.author = request.user
             comment.save()
+            print(f"Comment saved: {comment.content} for {comment.meetup}")
             return redirect('meetups:meetup-details', meetup_slug=meetup.slug)
     else:
         form = CommentForm()

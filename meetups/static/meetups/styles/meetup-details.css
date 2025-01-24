@@ -142,9 +142,7 @@ button:hover,
 }
 
 #comments li {
-  margin-bottom: 1rem;
   border-bottom: 2px solid #ccc;
-
   display: flex; /* Makes name and comment content sit side by side */
   align-items: center; /* Aligns items vertically */
   gap: 15px; /* Space between name and comment */
@@ -163,8 +161,9 @@ button:hover,
 #comments h2 {
   color: #ededed;
   font-size: 1.1rem;
-  min-width: 120px; /* Ensures name has enough space */
+  min-width: 160px; /* Ensures name has enough space */
   white-space: nowrap; /* Prevents name from wrapping */
+  text-align: left;
 }
 
 #comments p {

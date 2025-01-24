@@ -17,7 +17,7 @@
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             {{ form.media }}
             
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form.as_p }}
                 <button type="submit" class="btn btn-success">Create Meetup!</button>

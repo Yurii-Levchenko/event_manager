@@ -21,7 +21,7 @@ class MeetupForm(forms.ModelForm):
             'organizer',
             'tags',
             'description',
-            # 'image',
+            'image',
             'event_date',
             'is_online',
             'link',
@@ -50,6 +50,7 @@ class MeetupForm(forms.ModelForm):
         meetup.is_published = True
         if commit:
             meetup.save()
+            self.save_m2m()
         return meetup
 
     def clean(self):

@@ -104,20 +104,14 @@
 
             <section id="comments">
                 <ul>
-                    {% if meetups.comments.all %}
-                        {% for comment in meetup.comments.all %}
-                            <li>
-                                <h2>{{comment.author.full_name}}</h2>
-                                <p>{{comment.content|linebreaks}}</p>
-                            </li>
-                            {% comment %} <li>
-                                <strong>{{ comment.author.full_name }}</strong> ({{ comment.created_at|date:"F j, Y H:i" }}): 
-                                {{ comment.content }}
-                            </li> {% endcomment %}
-                        {% endfor %}
-                    {% else %}
+                    {% for comment in comments %}
+                        <li>
+                            <h2>{{comment.author.full_name}}</h2>
+                            <p>{{comment.content|linebreaks}}</p>
+                        </li>
+                        {% empty %}
                         <h2>Be the first to comment!</h2>
-                    {% endif %}
+                    {% endfor %}
                 </ul>
             </section>
         </section>
